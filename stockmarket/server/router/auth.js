@@ -1,8 +1,8 @@
 const { application } = require('express');
 const express=require('express');
 const  router=express.Router();
- const bcrypt=require('bcrypt');
-// const jwt=require('jsonwebtoken');
+const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
 
 require('../db/conn.js');
 
@@ -34,7 +34,7 @@ router.post('/register',async(req,res)=>{
                 return res.status(422).json({error:"this info already present"});
             }
     
-            const user_info =new User(req.body);
+            const user_info =new User({name,email,phone,password});
     
             await user_info.save()
     
@@ -65,7 +65,8 @@ router.post('/signin',async(req,res)=>{
       console.log(User_info);
 
       const match = await bcrypt.compare(password,User_info.password);
-
+      const token=await User_info.generateAuthToken();
+      console.log(token);
 
       if(!match){
         console.log(match);

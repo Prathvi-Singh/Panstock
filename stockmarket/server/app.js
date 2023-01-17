@@ -2,8 +2,12 @@ const express=require('express');
 const mongoose=require('mongoose');
 const app=express();
 const PORT=8000;
+const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
+const dotenv=require('dotenv');
 
 require('./db/conn.js');
+dotenv.config({path:'./config.env'});
 
 app.use(express.json());
 app.use(require('./router/auth'));
